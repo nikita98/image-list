@@ -1,15 +1,12 @@
 import React from 'react'
 
 export default function Card(props) {
-  const cardInfo = props.card;
-  const addToFavorite = props.addToFavorite;
-  const starred = props.card.starred
-
+  const { author, starred, src, addToFavorite} = props;
   return (
     <div className="card">
-      <img className="card-img-top" src={cardInfo.download_url} alt="image" />
+      <img className="card-img-top" src={src} alt="" />
       <div className="card-body">
-        <h5 className="card-title">{cardInfo.author}</h5>
+        <h5 className="card-title">{author}</h5>
         <button
           onClick={addToFavorite}
           className={starred ? "btn my-btn btn-success" : "btn my-btn btn-primary"}

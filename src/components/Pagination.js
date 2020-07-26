@@ -12,7 +12,7 @@ export default function Pagination({ cardsPerPage, totalCards, paginate }) {
       <ul className='pagination'>
         {pageNumbers.map(number => (
           <li key={number} className='page-item'>
-            <button onClick={() => paginate(number)} href='!#' className='page-link'>
+            <button onClick={() => paginate(number)} className='page-link'>
               {number}
             </button>
           </li>
