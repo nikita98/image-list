@@ -1,0 +1,32 @@
+@import "~bootstrap/scss/bootstrap";
+
+.image-list {
+  columns: 3;
+  column-fill:auto;
+  
+  &__item {
+    column-span: none;
+    break-inside: avoid;
+  }
+}
+
+.my-btn{
+  height: 40px;
+  width: 40px;
+  justify-self: center;
+  align-self: center;
+}
+
+// body {
+//   margin: 0;
+//   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+//     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+//     sans-serif;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+// }
+
+// code {
+//   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+//     monospace;
+// }
