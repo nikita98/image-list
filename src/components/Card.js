@@ -1,14 +1,18 @@
 import React from 'react'
 
 export default function Card(props) {
-  const { author, starred, src, addToFavorite} = props;
+  const { author, starred, src, addToFavorite } = props;
+  const handleClick = (e) => {
+    e.preventDefault();
+    addToFavorite()
+  }
   return (
     <div className="card">
       <img className="card-img-top" src={src} alt="" />
       <div className="card-body">
         <h5 className="card-title">{author}</h5>
         <button
-          onClick={addToFavorite}
+          onClick={handleClick}
           className={starred ? "btn my-btn btn-success" : "btn my-btn btn-primary"}
         >
           <svg width="100%" height="100%" viewBox="0 0 16 16" className="bi bi-star" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
