@@ -1,9 +1,12 @@
 import React from 'react';
 
-export default function Pagination({ cardsPerPage, length, currentPage, paginate }) {
+export default function Pagination({ length, cardsPerPage, currentPage, paginate }) {
   const pageNumbers = [];
 
-  if (length <= cardsPerPage) { }
+  if (length <= cardsPerPage) {
+    // работает, но выдаёт ошибку
+    // if(currentPage > 1) paginate(currentPage - 1) 
+  }
   else if (length / cardsPerPage < 11) {
     for (let i = 1; i <= Math.ceil(length / cardsPerPage); i++) {
       pageNumbers.push(i);

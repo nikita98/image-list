@@ -12,10 +12,14 @@ export default function App() {
   const [favoriteCards, setFavoriteCards] = useState([]);
   const [currentFavoriteCards, setCurrentFavoriteCards] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
-  const [favoritePage, setFavoritePage] = useState(1);
+  const [currentFavoritePage, setCurrentFavoritePage] = useState(1);
+
   const [loading, setLoading] = useState(true);
+  // Переменные для пагинации
+  const favoriteCardsLength = favoriteCards.length
   const [cardsPerPage] = useState(6);
 
+  // Обновляем избранное
   const favoriteCardsSetter = () => {
     let newFavoriteCards = [];
     for (let i = 0; i < allCards.length; i++) {
@@ -31,14 +35,18 @@ export default function App() {
     }
     setFavoriteCards(newFavoriteCards)
   }
-  const CurrentFavoriteCardsSetter = () => {
-    // const newFavoriteCards = favoriteCards.slice(((favoritePage - 1) * cardsPerPage), cardsPerPage)
-    const newFavoriteCards = favoriteCards.slice(((favoritePage - 1) * cardsPerPage), favoritePage * cardsPerPage)
-    setCurrentFavoriteCards(newFavoriteCards)
-  }
-  // переменные для пагинации
-  const favoriteCardsLength = favoriteCards.length
-  // добавление элемента в "избранное"
+
+  // Это то, что мы показываем на странице избранного.
+  useEffect(() => {
+    const CurrentFavoriteCardsSetter = () => {
+      const newFavoriteCards = favoriteCards.slice(((currentFavoritePage - 1) * cardsPerPage), currentFavoritePage * cardsPerPage)
+      setCurrentFavoriteCards(newFavoriteCards)
+    }
+    CurrentFavoriteCardsSetter()
+  }, [currentFavoritePage, favoriteCards, cardsPerPage]);
+
+
+  // Добавление элемента в "избранное"
   const addToFavorite = (id) => {
     let newCards = allCards.slice();
     for (let i = 0; i < newCards.length; i++) {
@@ -53,12 +61,14 @@ export default function App() {
       }
     }
     setAllCards(newCards);
-    // setFavoriteCards(newFavoriteCards);
+    favoriteCardsSetter() // Вот тут вызываеи обновление избранного
   }
 
-  // меняем страницу
+
+
+  // Меняем страницу. Если "Favorite" - меняем страницу в избранном
   const paginate = (page, favorite) => {
-    favorite ? favoritePageSetter(page) : cuurentPageSetter(page)
+    favorite ? currentFavoritePageSetter(page) : cuurentPageSetter(page)
   }
 
   const cuurentPageSetter = (page) => {
@@ -75,16 +85,15 @@ export default function App() {
     setCurrentPage(page)
   }
 
-  const favoritePageSetter = (page) => {
-
-    if (favoritePage === page) { return }
-    setFavoritePage(page)
+  const currentFavoritePageSetter = (page) => {
+    if (currentFavoritePage === page) { return }
+    setCurrentFavoritePage(page)
   }
 
   // получение JSON api
   const fetchCards = async (page) => {
     setLoading(true);
-    const res = await axios.get(`https://picsum.photos/v2/list?page=${page}&limit=6`);
+    const res = await axios.get(`https://picsum.photos/v2/list?page=${page}&limit=${cardsPerPage}`);
     return res.data;
   };
 
@@ -93,13 +102,6 @@ export default function App() {
     paginate(currentPage)
   }, []);
 
-  useEffect(() => {
-    favoriteCardsSetter()
-  }, [allCards]);
-
-  useEffect(() => {
-    CurrentFavoriteCardsSetter()
-  }, [favoritePage, favoriteCards]);
 
 
   if (loading) {
@@ -132,19 +134,18 @@ export default function App() {
             )}
           />
           <Route path={'/Favorites'} render={props => (
-            //тот же компонент, что и предыдущий, но с опцией "onlyFavorite" - в нём отображаются только избранные элементы
             <div>
               <ImageList
-                currentPage={favoritePage}
+                currentPage={currentFavoritePage}
                 cards={currentFavoriteCards}
                 addToFavorite={addToFavorite}
                 loading={loading}
                 onlyFavorite />
               <Pagination
-                currentPage={favoritePage}
+                currentPage={currentFavoritePage}
                 cardsPerPage={cardsPerPage}
                 length={favoriteCardsLength}
-                paginate={(number) => paginate(number, true)}
+                paginate={(number) => paginate(number, true)}//передаёт true, потому что избранный
               />
             </div>
           )} />
